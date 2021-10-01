@@ -24,7 +24,11 @@ var twClient *twitter.Client
 
 func initTwitter() {
 	var twenv twitterEnv
-	envconfig.Process("", &twenv)
+	err := envconfig.Process("", &twenv)
+	if err != nil {
+		log.Fatalln("twitter.go: Env is not found.")
+		panic(err)
+	}
 
 	conf := &clientcredentials.Config{
 		ClientID:     twenv.TwitterApiKey,

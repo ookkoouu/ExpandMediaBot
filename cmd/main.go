@@ -13,12 +13,15 @@ import (
 
 type env struct {
 	DcTokenDev string `required:"true" split_words:"true"`
-	OwnerId    string `required:"true" split_words:"true"`
 }
 
 func main() {
 	var env env
-	envconfig.Process("", &env)
+	err := envconfig.Process("", &env)
+	if err != nil {
+		log.Fatalln("main.go: Env is not found.")
+		panic(err)
+	}
 
 	// ログイン
 	dcs, err := discordgo.New("Bot " + env.DcTokenDev)
