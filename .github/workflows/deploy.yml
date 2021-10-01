@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - "dev/*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cpu: [amd64, arm32, arm64]
+        include:
+          - cpu: amd64
+            arch: amd64
+          - cpu: arm32
+            arch: arm
+          - cpu: arm64
+            arch: arm64
+
+    steps:
+      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v2
+      - name: get depend's
+        run: go mod download
+      
+      - name: build
+        env:
+          arch: ${{ matrix.arch }}
+        run: |
+          GOOS=linux
+          GOARCH=$arch
+          go build -v -o ./bin/app_$GOARCH ./cmd/main.go
+
+      - name: create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./bin/*
+          draft: true
