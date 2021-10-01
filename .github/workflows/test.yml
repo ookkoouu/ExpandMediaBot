@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    steps:
+      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v2
+      - name: get depend's
+        run: go mod download
+        
+      - name: test code
+        run: go test ./cmd/...
