@@ -2,9 +2,13 @@ version: "3.7"
 services:
   app:
     image: debian:11-slim
+    container_name: exp-img-bot
     restart: always
     working_dir: /go
     env_file: .env
+    environment:
+      TZ: Asia/Tokyo
     volumes:
-      - ./app_arm32:/go/app
-    command: ./go/app
+      - ./:/go
+      - /etc/ssl/certs:/etc/ssl/certs/
+    command: ./app_arm

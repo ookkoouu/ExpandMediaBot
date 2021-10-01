@@ -12,7 +12,7 @@ import (
 )
 
 type env struct {
-	DcTokenDev string `required:"true" split_words:"true"`
+	DcToken string `required:"true" split_words:"true"`
 }
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 	}
 
 	// ログイン
-	dcs, err := discordgo.New("Bot " + env.DcTokenDev)
+	dcs, err := discordgo.New("Bot " + env.DcToken)
 	if err != nil {
 		panic(err)
 	}
