@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   app:
-    image: golang:1
+    image: debian:11-slim
     restart: always
     working_dir: /go
     env_file: .env
