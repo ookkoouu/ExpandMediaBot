@@ -43,5 +43,5 @@ func main() {
 
 	dcs.AddHandler(handler.ExpandTwitter)
 
-	log.Println("\x1b[32m\x1b[0m", "Bot started...")
+	log.Printf("\x1b[32m%s\x1b[0m", "Bot started...")
 }
