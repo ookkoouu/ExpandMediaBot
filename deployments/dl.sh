@@ -6,4 +6,4 @@ fi
 curl -sLJO -H 'Accept: application/octet-stream' \
   "https://$GH_TOKEN@api.github.com/repos/ookkoouu/ExpandMediaBot/releases/assets/$(\
     curl -sL https://$GH_TOKEN@api.github.com/repos/ookkoouu/ExpandMediaBot/releases/latest \
-      |jq '.assets[] | select(.name | contains("arm32")) | .id')"
+      |jq '.assets[] | select(.name | contains("arm")) | .id')"
