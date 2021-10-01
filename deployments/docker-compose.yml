@@ -2,8 +2,9 @@ version: "3.7"
 services:
   app:
     image: golang:1
+    restart: always
     working_dir: /go
     env_file: .env
     volumes:
       - ./app_arm32:/go/app
-    command: sh /go/app
+    command: ./go/app
