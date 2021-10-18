@@ -6,7 +6,7 @@ require (
 	github.com/bwmarrin/discordgo v0.23.2
 	github.com/dghubble/go-twitter v0.0.0-20211002212826-ad02880e616b
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/ookkoouu/twiutil v1.1.0
+	github.com/ookkoouu/twiutil v1.1.1
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
 )
 

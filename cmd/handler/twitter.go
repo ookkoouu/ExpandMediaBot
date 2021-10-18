@@ -37,7 +37,7 @@ func initTwitter() {
 }
 
 func getTweet(id int64) (tweet *twitter.Tweet, err error) {
-	tweet, _, err = twClient.Statuses.Show(id, nil)
+	tweet, _, err = twClient.Statuses.Show(id, &twitter.StatusShowParams{TweetMode: "extended"})
 	return
 }
 
@@ -47,16 +47,20 @@ func ExpandTwitter(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	tweetIDs := twiutil.FindIdAll(m.Content)
-	if len(tweetIDs) > 0 {
-		log.Println("ExpandTwitter called")
-		for _, id := range tweetIDs {
-			tweet, err := getTweet(id)
-			if err != nil {
-				return
-			}
-			medias := twiutil.GetMediaUrlsString(*tweet)
-			s.ChannelMessageSend(m.ChannelID, strings.Join(medias[1:], "\n"))
+	if len(tweetIDs) == 0 {
+		return
+	}
 
+	for _, id := range tweetIDs {
+		tweet, err := getTweet(id)
+		if err != nil {
+			log.Printf("\x1b[33m%s\x1b[0m", err)
+			return
+		}
+
+		medias := twiutil.GetMediaUrlsString(*tweet)
+		if len(medias) >= 2 {
+			s.ChannelMessageSend(m.ChannelID, strings.Join(medias[1:], "\n"))
 			log.Println(id, medias)
 		}
 	}
