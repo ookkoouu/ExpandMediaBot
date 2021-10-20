@@ -58,10 +58,20 @@ func ExpandTwitter(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		medias := twiutil.GetMediaUrlsString(*tweet)
-		if len(medias) >= 2 {
-			s.ChannelMessageSend(m.ChannelID, strings.Join(medias[1:], "\n"))
-			log.Println(id, medias)
+		medias := twiutil.GetMediaUrls(*tweet)
+		urls := twiutil.GetMediaUrlsString(*tweet)
+
+		if len(medias) == 0 {
+			return
 		}
+		if medias[0].Type == "photo" {
+			if len(medias) < 2 {
+				return
+			}
+			s.ChannelMessageSend(m.ChannelID, strings.Join(urls[1:], "\n"))
+		} else {
+			s.ChannelMessageSend(m.ChannelID, strings.Join(urls, "\n"))
+		}
+		log.Println(id, urls)
 	}
 }
