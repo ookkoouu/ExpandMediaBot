@@ -41,6 +41,13 @@ func getTweet(id int64) (tweet *twitter.Tweet, err error) {
 	return
 }
 
+func getQuotedTweetUrl(tweet *twitter.Tweet) string {
+	if tweet.QuotedStatusIDStr == "" {
+		return ""
+	}
+	return "https://twitter.com/i/status/" + tweet.QuotedStatusIDStr
+}
+
 func ExpandTwitter(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.Bot {
 		return
@@ -52,12 +59,14 @@ func ExpandTwitter(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	for _, id := range tweetIDs {
+		postText := ""
 		tweet, err := getTweet(id)
 		if err != nil {
 			log.Printf("\x1b[33m%s\x1b[0m", err)
 			return
 		}
 
+		// メディア
 		medias := twiutil.GetMediaUrls(*tweet)
 		urls := twiutil.GetMediaUrlsString(*tweet)
 
@@ -68,10 +77,20 @@ func ExpandTwitter(s *discordgo.Session, m *discordgo.MessageCreate) {
 			if len(medias) < 2 {
 				return
 			}
-			s.ChannelMessageSend(m.ChannelID, strings.Join(urls[1:], "\n"))
+			postText += strings.Join(urls[1:], "\n")
 		} else {
-			s.ChannelMessageSend(m.ChannelID, strings.Join(urls, "\n"))
+			postText += strings.Join(urls, "\n")
 		}
-		log.Println(id, urls)
+
+		// 引用RT
+		quoted := getQuotedTweetUrl(tweet)
+		if quoted != "" {
+			postText += "\n引用RT\n" + quoted
+		}
+
+		if postText != "" {
+			s.ChannelMessageSend(m.ChannelID, postText)
+			log.Println(id, urls)
+		}
 	}
 }
