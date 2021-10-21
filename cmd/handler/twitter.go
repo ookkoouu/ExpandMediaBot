@@ -8,7 +8,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/kelseyhightower/envconfig"
-	"github.com/ookkoouu/twiutil"
+	"github.com/ookkoouu/twiutil/v2"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
@@ -41,22 +41,15 @@ func getTweet(id int64) (tweet *twitter.Tweet, err error) {
 	return
 }
 
-func getQuotedTweetUrl(tweet *twitter.Tweet) string {
-	if tweet.QuotedStatusIDStr == "" {
-		return ""
-	}
-	return "https://twitter.com/i/status/" + tweet.QuotedStatusIDStr
-}
-
 func getTextMedia(tweet *twitter.Tweet) (text string) {
-	medias := twiutil.GetMediaUrls(*tweet)
-	urls := twiutil.GetMediaUrlsString(*tweet)
+	urls := twiutil.GetMediaUrls(tweet)
+	mtypes := twiutil.GetMediaTypes(tweet)
 
-	if len(medias) == 0 {
+	if urls == nil {
 		return
 	}
-	if medias[0].Type == "photo" {
-		if len(medias) < 2 {
+	if mtypes[0] == "photo" {
+		if len(urls) < 2 {
 			return
 		}
 		text = strings.Join(urls[1:], "\n") + "\n"
@@ -67,7 +60,7 @@ func getTextMedia(tweet *twitter.Tweet) (text string) {
 }
 
 func getTextQuoted(tweet *twitter.Tweet) (text string) {
-	quoted := getQuotedTweetUrl(tweet)
+	quoted := twiutil.GetQuotedTweetUrl(tweet)
 	if quoted != "" {
 		text = "引用RT\n" + quoted + "\n"
 	}
