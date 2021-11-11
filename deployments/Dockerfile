@@ -1,11 +1,16 @@
-FROM debian:11-slim
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends curl jq ca-certificates
-RUN curl -sLJO -H 'Accept: application/octet-stream' \
-  "https://api.github.com/repos/ookkoouu/ExpandMediaBot/releases/assets/$(\
+FROM golang:1.17 AS builder
+WORKDIR /src
+RUN curl -sL -o app.tar.gz "$( \
   curl -sL https://api.github.com/repos/ookkoouu/ExpandMediaBot/releases/latest \
-  |jq '.assets[] | select(.name=="app_arm") | .id')" \
-  && chmod +x app_arm
+  | grep tarball \
+  | awk -F '"' '{print $4}')" && \
+  tar -zxvf app.tar.gz --strip-components 1
+RUN CGO_ENABLED=0 go build -o app ./cmd/main.go
 
-ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
-CMD [ "./app_arm" ]
+FROM alpine:latest
+WORKDIR /
+RUN apk --no-cache add tzdata && \
+  cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+  apk del tzdata
+COPY --from=builder /src/app .
+ENTRYPOINT [ "./app" ]

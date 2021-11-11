@@ -1,11 +1,8 @@
 version: "3.7"
 services:
-  app:
+  exp-img:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: exp-img-bot
     restart: always
     env_file: .env
-    environment:
-      TZ: Asia/Tokyo
