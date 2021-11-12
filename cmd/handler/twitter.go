@@ -19,7 +19,7 @@ type twitterEnv struct {
 
 var twClient *twitter.Client
 
-func initTwitter() {
+func init() {
 	var twenv twitterEnv
 	err := envconfig.Process("", &twenv)
 	if err != nil {
@@ -34,6 +34,8 @@ func initTwitter() {
 	}
 	httpClient := conf.Client(context.Background())
 	twClient = twitter.NewClient(httpClient)
+
+	handles = append(handles, ExpandTwitter)
 }
 
 func getTweet(id int64) (tweet *twitter.Tweet, err error) {

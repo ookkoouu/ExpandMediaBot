@@ -42,9 +42,7 @@ func main() {
 		dcs.Close()
 	}()
 
-	handler.Init()
-
-	dcs.AddHandler(handler.ExpandTwitter)
+	handler.Regist(dcs)
 
 	log.Printf("\x1b[32m%s\x1b[0m", "Bot started...")
 }
