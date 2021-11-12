@@ -2,29 +2,18 @@ package main
 
 import (
 	"emb/cmd/handler"
+	"emb/cmd/env"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/kelseyhightower/envconfig"
 )
 
-type env struct {
-	DcToken string `required:"true" split_words:"true"`
-}
-
 func main() {
-	var env env
-	err := envconfig.Process("", &env)
-	if err != nil {
-		log.Fatalln("main.go: Env is not found.")
-		panic(err)
-	}
-
 	// ログイン
-	dcs, err := discordgo.New("Bot " + env.DcToken)
+	dcs, err := discordgo.New("Bot " + env.Env.DcToken)
 	if err != nil {
 		panic(err)
 	}

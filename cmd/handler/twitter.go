@@ -2,34 +2,22 @@ package handler
 
 import (
 	"context"
+	"emb/cmd/env"
 	"log"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/kelseyhightower/envconfig"
 	"github.com/ookkoouu/twiutil/v2"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-type twitterEnv struct {
-	TwitterApiKey    string `required:"true" split_words:"true"`
-	TwitterApiSecret string `required:"true" split_words:"true"`
-}
-
 var twClient *twitter.Client
 
 func init() {
-	var twenv twitterEnv
-	err := envconfig.Process("", &twenv)
-	if err != nil {
-		log.Fatalln("twitter.go: Env is not found.")
-		panic(err)
-	}
-
 	conf := &clientcredentials.Config{
-		ClientID:     twenv.TwitterApiKey,
-		ClientSecret: twenv.TwitterApiSecret,
+		ClientID:     env.Env.TwitterApiKey,
+		ClientSecret: env.Env.TwitterApiSecret,
 		TokenURL:     "https://api.twitter.com/oauth2/token",
 	}
 	httpClient := conf.Client(context.Background())
