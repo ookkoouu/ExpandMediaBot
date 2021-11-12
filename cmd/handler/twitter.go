@@ -61,6 +61,9 @@ func ExpandTwitter(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.Bot {
 		return
 	}
+	if isIgnoreChannel(m.ChannelID) {
+		return
+	}
 
 	tweetIDs := twiutil.FindIdAll(m.Content)
 	if len(tweetIDs) == 0 {

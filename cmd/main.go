@@ -1,8 +1,8 @@
 package main
 
 import (
-	"emb/cmd/handler"
 	"emb/cmd/env"
+	"emb/cmd/handler"
 	"log"
 	"os"
 	"os/signal"
@@ -28,6 +28,7 @@ func main() {
 		sc := make(chan os.Signal, 1)
 		signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 		<-sc
+		handler.Exit()
 		dcs.Close()
 	}()
 
