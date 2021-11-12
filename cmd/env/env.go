@@ -8,8 +8,8 @@ import (
 
 type AppEnv struct {
 	DcToken string `required:"true" split_words:"true"`
-	BotID   string `required:"true" split_words:"true"`
-	OwnerID string `required:"true" split_words:"true"`
+	BotId   string `required:"true" split_words:"true"`
+	OwnerId string `required:"true" split_words:"true"`
 
 	TwitterApiKey    string `required:"true" split_words:"true"`
 	TwitterApiSecret string `required:"true" split_words:"true"`
