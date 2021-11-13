@@ -1,9 +1,9 @@
 version: "3.7"
 services:
-  exp-img:
+  exp-media:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: exp-img
+    container_name: exp-media
     restart: always
     env_file: .env
