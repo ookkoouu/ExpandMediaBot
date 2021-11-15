@@ -1,4 +1,4 @@
-package main
+package applog
 
 import (
 	"bytes"
@@ -15,7 +15,7 @@ type discordWebhook struct {
 	TTS       bool   `json:"tts"`
 }
 
-func logDiscord(s string) {
+func Discord(s string) {
 	url := env.Env.DcLogWebhook
 	if url == "" {
 		return

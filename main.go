@@ -1,6 +1,7 @@
 package main
 
 import (
+	"emb/applog"
 	"emb/env"
 	"emb/handler"
 	"log"
@@ -33,9 +34,9 @@ func main() {
 		<-sc
 		handler.Exit()
 		dcs.Close()
-		logDiscord(":no_entry: 停止しました")
+		applog.Discord(":no_entry: 停止しました")
 	}()
 
 	log.Printf("\x1b[32m%s\x1b[0m", "Bot started...")
-	logDiscord(":white_check_mark: 起動しました")
+	applog.Discord(":white_check_mark: 起動しました")
 }
