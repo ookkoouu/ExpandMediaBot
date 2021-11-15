@@ -18,6 +18,9 @@ func main() {
 		panic(err)
 	}
 
+	// ハンドラ設定
+	handler.Regist(dcs)
+
 	// ws接続
 	err = dcs.Open()
 	if err != nil {
@@ -30,9 +33,9 @@ func main() {
 		<-sc
 		handler.Exit()
 		dcs.Close()
+		logDiscord(":no_entry: 停止しました")
 	}()
 
-	handler.Regist(dcs)
-
 	log.Printf("\x1b[32m%s\x1b[0m", "Bot started...")
+	logDiscord(":white_check_mark: 起動しました")
 }
