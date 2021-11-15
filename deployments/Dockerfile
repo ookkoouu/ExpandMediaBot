@@ -1,11 +1,13 @@
-FROM golang:1.17 AS builder
+FROM golang:1.17-alpine AS builder
 WORKDIR /src
-RUN curl -sL -o app.tar.gz "$( \
+RUN apk --no-cache add curl && \
+  curl -sL -o app.tar.gz "$( \
   curl -sL https://api.github.com/repos/ookkoouu/ExpandMediaBot/releases/latest \
   | grep tarball \
   | awk -F '"' '{print $4}')" && \
-  tar -zxvf app.tar.gz --strip-components 1
-RUN CGO_ENABLED=0 go build -o app ./cmd/main.go
+  tar -zxvf app.tar.gz --strip-components 1 && \
+  apk del curl
+RUN CGO_ENABLED=0 go build -trimpath -o app ./cmd/main.go
 
 FROM alpine:latest
 WORKDIR /
