@@ -1,8 +1,8 @@
 package main
 
 import (
-	"emb/cmd/env"
-	"emb/cmd/handler"
+	"emb/env"
+	"emb/handler"
 	"log"
 	"os"
 	"os/signal"

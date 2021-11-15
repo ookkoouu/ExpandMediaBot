@@ -7,7 +7,7 @@ RUN apk --no-cache add curl && \
   | awk -F '"' '{print $4}')" && \
   tar -zxvf app.tar.gz --strip-components 1 && \
   apk del curl
-RUN CGO_ENABLED=0 go build -trimpath -o app ./cmd/main.go
+RUN CGO_ENABLED=0 go build -trimpath -o app .
 
 FROM alpine:latest
 WORKDIR /

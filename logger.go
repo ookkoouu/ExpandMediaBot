@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	"emb/cmd/env"
+	"emb/env"
 	"encoding/json"
 	"log"
 	"net/http"
